@@ -9,15 +9,18 @@ def create_github_issue():
     print("1. DL-Simplified (Add your BERT Fake News and RAG PDF Notebooks)")
     print("2. SnapPass-AI (Add Python AI Auto Background Removal / Face Centering)")
     print("3. KisanAI (Add Multilingual Crop Chatbot / FAISS RAG Pipeline)")
+    print("4. Career-pilot (Add AI Resume Parser / ATS Job Matcher)")
+    print("5. StudyPlan (Add NLP Task & Deadline Extraction)")
+    print("6. AgentAPI (Add Hugging Face LLM Client Integration)")
     print("=====================================================")
-    print("*(You can select one choice like '1', or multiple separated by commas like '1,2,3')*")
+    print("*(You can select one choice like '1', or multiple separated by commas like '1,2,3,4')*")
     print("=====================================================")
     
     choice_input = input("Enter choice(s): ").strip()
     
-    # Parse inputs (splits by comma and cleans spaces and single quotes)
+    # Parse inputs (splits by comma and cleans spaces and quotes)
     cleaned_input = choice_input.replace("'", "").replace('"', "")
-    selected_choices = [c.strip() for c in cleaned_input.split(",") if c.strip() in ["1", "2", "3"]]
+    selected_choices = [c.strip() for c in cleaned_input.split(",") if c.strip() in ["1", "2", "3", "4", "5", "6"]]
     
     if not selected_choices:
         print("❌ Invalid choice(s). Exiting.")
@@ -96,10 +99,58 @@ I have built a similar fully-functioning RAG Chatbot on Colab with T4 GPU and wo
 
 Please assign this issue to me under GSSoC '26. Thank you!"""
 
+        elif choice == "4":
+            owner = "anurag3407"
+            repo = "career-pilot"
+            title = "[GSSoC '26] Feature: Implement PDF Resume Parser and ATS Job Matcher using Gemini API"
+            body = """Hello Mentor (@anurag3407),
+
+I would like to contribute to Career-pilot by building a PDF Resume Parser and ATS Job Matcher feature.
+
+I propose to implement:
+1. **PDF Text Extraction:** Parses uploaded candidate resume PDFs.
+2. **ATS Scoring:** Matches extracted resume skills, experience, and keywords against a target job description.
+3. **Optimized Suggestions:** Uses Gemini API/LLM prompts to generate specific resume improvements (e.g. missing keywords, formatting edits).
+
+I have strong experience working with Python, LLMs, and RAG pipelines, and I have recently built a PDF AI Assistant project. I would love to work on this feature!
+
+Please assign this issue to me under GSSoC '26. Thank you!"""
+
+        elif choice == "5":
+            owner = "Charushi06"
+            repo = "StudyPlan"
+            title = "[GSSoC '26] Feature: Add NLP Task & Deadline Extraction from Messy Input Texts"
+            body = """Hello Mentor (@Charushi06),
+
+I would like to contribute to StudyPlan by adding a smart NLP Task and Deadline Extraction engine.
+
+This feature will:
+1. Parse unstructured inputs (e.g., chat logs, messy assignment briefs, emails).
+2. Extract calendar deadlines, subjects, and specific tasks using regular expressions combined with an NLP zero-shot classifier or LLM prompt wrapper.
+3. Output a structured JSON payload to automatically sync with the database and frontend calendar.
+
+I have strong experience working with Python and NLP libraries (Transformers, Spacy, NLTK) and would love to build this parser backend.
+
+Please assign this issue to me under GSSoC '26. Thank you!"""
+
+        elif choice == "6":
+            owner = "prajwalsuryawanshi"
+            repo = "AgentAPI"
+            title = "[GSSoC '26] Feature: Add Hugging Face LLM Client Integration and Response Streaming"
+            body = """Hello Mentor (@prajwalsuryawanshi),
+
+I would like to contribute to AgentAPI by adding support for Hugging Face Inference Client integration and response streaming.
+
+This feature will:
+1. Allow the framework to natively connect to Hugging Face Hub inference endpoints for model loading.
+2. Enable fast response streaming using FastAPI's `StreamingResponse` objects.
+3. Provide simple wrapper classes for easily swapping model IDs (like Qwen, Mistral, Llama).
+
+I have built similar Hugging Face LLM RAG pipelines and would love to contribute this developer feature to the project.
+
+Please assign this issue to me under GSSoC '26. Thank you!"""
+
         url = f"https://api.github.com/repos/{owner}/{repo}/issues"
-        
-        # NOTE: We do not include "labels" here because GitHub API prevents non-collaborators
-        # from assigning labels during issue creation, which causes a 403 error.
         payload = {
             "title": title,
             "body": body
