@@ -498,13 +498,83 @@ add_code([
     "plt.show()"
 ])
 
-# --- CELL 20: INTERACTIVE INTRO ---
+# --- CELL 20: EXPLAINABILITY INTRO ---
 add_markdown([
-    "## 🎛️ Step 11: Interactive Headline Analyzer",
-    "Use this interactive widget to test any Indian news headline! Enter a headline below and click **Analyze Headline** to get real-time classification predictions and confidence scores."
+    "## 🧠 Step 11: Explainable AI (XAI) - Model Attention Highlights",
+    "One of the biggest advantages of transformers is **Self-Attention**. When classifying a headline, the model pays different levels of attention to different words. We can extract the attention matrices from DistilBERT's last layer to visualize exactly which words the model focused on to make its decision (Real/Fake)."
 ])
 
-# --- CELL 21: INTERACTIVE CODE ---
+# --- CELL 21: EXPLAINABILITY CODE ---
+add_code([
+    "def explain_attention(headline):",
+    "    model.eval()",
+    "    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')",
+    "    model.to(device)",
+    "    ",
+    "    # Tokenize input",
+    "    inputs = tokenizer(headline, return_tensors='pt')",
+    "    inputs = {k: v.to(device) for k, v in inputs.items()}",
+    "    ",
+    "    with torch.no_grad():",
+    "        # output_attentions=True returns self-attention tensors",
+    "        outputs = model(**inputs, output_attentions=True)",
+    "        logits = outputs.logits",
+    "        pred = np.argmax(logits.cpu().numpy(), axis=-1)[0]",
+    "        ",
+    "        # Get attention weights from last transformer layer",
+    "        # Shape: (1, num_heads, sequence_length, sequence_length)",
+    "        attentions = outputs.attentions[-1]",
+    "        ",
+    "        # Average weights across all attention heads",
+    "        avg_attn = attentions[0].mean(dim=0).cpu().numpy()",
+    "        ",
+    "        # Extract attention weights from [CLS] classification token to all other tokens",
+    "        cls_attn = avg_attn[0]",
+    "        ",
+    "    # Convert input token IDs to readable string tokens",
+    "    tokens = tokenizer.convert_ids_to_tokens(inputs['input_ids'][0].tolist())",
+    "    ",
+    "    # Filter out special helper tokens ([CLS], [SEP], [PAD])",
+    "    valid_indices = [i for i, t in enumerate(tokens) if t not in ['[CLS]', '[SEP]', '[PAD]']]",
+    "    if not valid_indices:",
+    "        return ''",
+    "        ",
+    "    scores = [cls_attn[i] for i in valid_indices]",
+    "    min_s, max_s = min(scores), max(scores)",
+    "    ",
+    "    # Normalize scores between 0 and 1 for transparency opacity",
+    "    norm_scores = [(s - min_s) / (max_s - min_s) if max_s > min_s else 0.5 for s in scores]",
+    "    ",
+    "    # Build HTML string highlighting the words",
+    "    html_str = \"<div style='margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 12px; font-size: 14px;'><strong>🧠 AI Model Word Focus (Self-Attention Highlights):</strong><br><div style='line-height: 2.2; margin-top: 8px;'>\"",
+    "    for idx, (token_idx, score) in enumerate(zip(valid_indices, norm_scores)):",
+    "        token = tokens[token_idx]",
+    "        # Format word pieces back together",
+    "        if token.startswith('##'):",
+    "            token = token[2:]",
+    "        else:",
+    "            if idx > 0:",
+    "                html_str += ' '",
+    "        ",
+    "        # Red background for Fake, Green for Real, opacity matches attention score",
+    "        color = f'rgba(220, 53, 69, {score * 0.6 + 0.15})' if pred == 1 else f'rgba(40, 167, 69, {score * 0.6 + 0.15})'",
+    "        html_str += f\"<span style='background-color: {color}; padding: 3px 6px; border-radius: 4px; border: 1px dashed rgba(0,0,0,0.1); font-weight: bold;'>{token}</span>\"",
+    "    ",
+    "    html_str += \"</div><p style='font-size: 11px; color:#6c757d; margin-top: 8px; margin-bottom: 0;'>Note: Darker background highlight indicates stronger attention weight allocated by the model.</p></div>\"",
+    "    return html_str",
+    "",
+    "# Test explainability on a sample fake news headline",
+    "from IPython.display import HTML",
+    "HTML(explain_attention('UNESCO declares Modi as the best Prime Minister in the universe'))"
+])
+
+# --- CELL 22: INTERACTIVE INTRO ---
+add_markdown([
+    "## 🎛️ Step 12: Interactive Headline Analyzer with Explainable AI",
+    "Use this interactive widget to test any Indian news headline! Enter a headline below, click **Analyze Headline**, and watch the model predict, compute confidence, and highlight the exact words it focused on."
+])
+
+# --- CELL 23: INTERACTIVE CODE ---
 add_code([
     "import ipywidgets as widgets",
     "from IPython.display import display, HTML",
@@ -541,6 +611,9 @@ add_code([
     "        real_p = float(res_df.iloc[0]['Real Probability'].replace('%', ''))",
     "        fake_p = float(res_df.iloc[0]['Fake Probability'].replace('%', ''))",
     "        ",
+    "        # Compute attention highlights",
+    "        attn_highlights = explain_attention(headline)",
+    "        ",
     "        # Beautiful HTML Card",
     "        color = '#28a745' if pred == 'Real' else '#dc3545'",
     "        emoji = '🌱' if pred == 'Real' else '⚠️'",
@@ -565,7 +638,8 @@ add_code([
     "                    </div>",
     "                    <span style='width: 50px; text-align: right; font-weight: bold; font-size: 13px;'>{fake_p:.1f}%</span>",
     "                </div>",
-    "                <p style='font-size: 11px; color: #777; margin-top: 10px; margin-bottom: 0;'>Model used: Fine-tuned DistilBERT (2 labels classification)</p>",
+    "                {attn_highlights}",
+    "                <p style='font-size: 11px; color: #777; margin-top: 12px; margin-bottom: 0;'>Model used: Fine-tuned DistilBERT (Self-Attention Activated)</p>",
     "            </div>",
     "        </div>",
     "        \"\"\"",
