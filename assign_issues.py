@@ -21,7 +21,14 @@ def assign_issues():
     print("🚀 GSSoC '26 Issue Assignment Automator")
     print("=====================================================")
     
-    token = input("🔑 Paste your GitHub PAT (starts with ghp_): ").strip()
+    token = ""
+    # Look for token in args (excluding options like -y or --yes)
+    args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
+    if args:
+        token = args[0].strip()
+    
+    if not token:
+        token = input("🔑 Paste your GitHub PAT (starts with ghp_): ").strip()
     if not token:
         print("❌ Error: Token cannot be empty.")
         return
@@ -108,7 +115,11 @@ def assign_issues():
     for idx, issue in enumerate(issues_to_comment, 1):
         print(f"{idx}. [{issue['repo']}] #{issue['number']}: {issue['title']}")
         
-    confirm = input("\nDo you want to post '/assign gssoc' comment on these issues? (y/n): ").strip().lower()
+    confirm = ""
+    if "-y" in sys.argv or "--yes" in sys.argv:
+        confirm = "y"
+    else:
+        confirm = input("\nDo you want to post '/assign gssoc' comment on these issues? (y/n): ").strip().lower()
     if confirm != "y":
         print("Cancelled.")
         return
