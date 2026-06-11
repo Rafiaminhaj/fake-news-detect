@@ -18,6 +18,9 @@ def create_github_issue():
     print("4. Career-pilot (Add AI Resume Parser / ATS Job Matcher)")
     print("5. StudyPlan (Add NLP Task & Deadline Extraction)")
     print("6. AgentAPI (Add Hugging Face LLM Client Integration)")
+    print("7. Med-genie (Add Symptom Classifier & Medical RAG Pipeline)")
+    print("8. AI Developer Assistant (Add Code Syntax Linter & LLM Refinement)")
+    print("9. DoVER (Add Gemini-powered Document Auditing & Anomaly Engine)")
     print("=====================================================")
     print("*(You can select one choice like '1', or multiple separated by commas like '1,2,3,4')*")
     print("=====================================================")
@@ -26,7 +29,7 @@ def create_github_issue():
     
     # Parse inputs (splits by comma and cleans spaces and quotes)
     cleaned_input = choice_input.replace("'", "").replace('"', "")
-    selected_choices = [c.strip() for c in cleaned_input.split(",") if c.strip() in ["1", "2", "3", "4", "5", "6"]]
+    selected_choices = [c.strip() for c in cleaned_input.split(",") if c.strip() in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]]
     
     if not selected_choices:
         print("❌ Invalid choice(s). Exiting.")
@@ -153,6 +156,48 @@ This feature will:
 3. Provide simple wrapper classes for easily swapping model IDs (like Qwen, Mistral, Llama).
 
 I have built similar Hugging Face LLM RAG pipelines and would love to contribute this developer feature to the project.
+
+Please assign this issue to me under GSSoC '26. Thank you!"""
+
+        elif choice == "7":
+            owner = "aayushraj1010"
+            repo = "med-genie"
+            title = "[GSSoC '26] Proposal: Add Symptom Classification Model and Medical Handbook RAG Pipeline"
+            body = """Hello Mentor (@aayushraj1010),
+
+I would like to contribute a highly technical improvement to Med-genie under GSSoC '26.
+
+I propose to implement two core modules:
+1. **BERT-based Symptom Classifier:** A fine-tuned `distilbert-base-uncased` NLP model that takes a patient's raw text symptoms and classifies them into disease categories with high accuracy.
+2. **Medical Handbook RAG Pipeline:** A Retrieval-Augmented Generation pipeline using `FAISS` and a local lightweight LLM (or Hugging Face API) to index medical Q&A handbooks, allowing users to query and receive factual, cited health tips.
+
+Please assign this issue to me under GSSoC '26. Thank you!"""
+
+        elif choice == "8":
+            owner = "imDarshanGK"
+            repo = "AI-dev-assistant"
+            title = "[GSSoC '26] Proposal: Add Python Code Syntax Linter and LLM-powered Refinement Engine"
+            body = """Hello Mentor (@imDarshanGK),
+
+I would like to contribute a backend feature to AI Developer Assistant under GSSoC '26.
+
+I propose to add a modular backend python service that:
+1. **Linter & Syntax Analyzer:** Parses uploaded code strings using Python's `ast` (Abstract Syntax Trees) module and returns precise line-by-line linting errors and logical syntax warnings.
+2. **LLM Refinement Generator:** Connects to an LLM client (e.g. Gemini API or Hugging Face Client) to generate instant, plain-English refactoring suggestions and bug-fix solutions based on the code analysis.
+
+Please assign this issue to me under GSSoC '26. Thank you!"""
+
+        elif choice == "9":
+            owner = "yellowgram1543"
+            repo = "DoVER"
+            title = "[GSSoC '26] Proposal: Add Gemini-Powered Document Content Auditing and Semantic Anomaly Engine"
+            body = """Hello Mentor (@yellowgram1543),
+
+I would like to contribute an advanced auditing feature to DoVER under GSSoC '26.
+
+I propose to build a Python-based **Security Intelligence** pipeline consisting of:
+1. **Document Content Audit:** Leverages the Gemini API to analyze PDF/Text documents, auditing them for semantic discrepancies, logical errors, or formatting anomalies.
+2. **Tamper & Anomaly Reports:** Generates a structured JSON audit report identifying potential text manipulation, verification status, and confidence scores to be saved securely.
 
 Please assign this issue to me under GSSoC '26. Thank you!"""
 
