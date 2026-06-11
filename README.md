@@ -33,8 +33,16 @@ This repository features **Explainable AI (XAI)** capabilities by extracting and
  [ Real vs Fake Class ] ──► [ HTML Attention Highlighter ]
                   │
                   ▼
-     [ Interactive UI Result Card ]
+      [ Interactive UI Result Card ]
 ```
+
+---
+
+## 📸 Notebook Interface Preview
+
+Here is a visual preview of the Google Colab Notebook interface and execution outputs:
+
+![Fake News Detector Colab Preview](screenshots/preview.png)
 
 ---
 
