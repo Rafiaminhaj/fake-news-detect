@@ -15,8 +15,9 @@ def create_github_issue():
     
     choice_input = input("Enter choice(s): ").strip()
     
-    # Parse inputs (splits by comma and cleans spaces)
-    selected_choices = [c.strip() for c in choice_input.split(",") if c.strip() in ["1", "2", "3"]]
+    # Parse inputs (splits by comma and cleans spaces and single quotes)
+    cleaned_input = choice_input.replace("'", "").replace('"', "")
+    selected_choices = [c.strip() for c in cleaned_input.split(",") if c.strip() in ["1", "2", "3"]]
     
     if not selected_choices:
         print("❌ Invalid choice(s). Exiting.")
@@ -63,7 +64,6 @@ Here are the details of the projects I have fully built and tested on Google Col
    - Repo: https://github.com/Rafiaminhaj/-pdf-ai-assistant
 
 Please assign this issue to me so I can raise a Pull Request (PR) and contribute these notebooks. Thank you!"""
-            labels = ["gssoc", "enhancement"]
             
         elif choice == "2":
             owner = "souma9830"
@@ -78,7 +78,6 @@ I would like to contribute to SnapPass-AI by implementing a robust Python AI pip
 I have strong experience working with Python, PyTorch, OpenCV, and deep learning pipelines. I would love to build this modular backend feature so it can be integrated with the Express API.
 
 Please assign this issue to me under GSSoC '26. Thank you!"""
-            labels = ["gssoc", "feature"]
             
         elif choice == "3":
             owner = "asheesh109"
@@ -96,13 +95,14 @@ I propose to use a **RAG (Retrieval-Augmented Generation)** pipeline that:
 I have built a similar fully-functioning RAG Chatbot on Colab with T4 GPU and would love to integrate this feature into KisanAI.
 
 Please assign this issue to me under GSSoC '26. Thank you!"""
-            labels = ["gssoc", "feature"]
 
         url = f"https://api.github.com/repos/{owner}/{repo}/issues"
+        
+        # NOTE: We do not include "labels" here because GitHub API prevents non-collaborators
+        # from assigning labels during issue creation, which causes a 403 error.
         payload = {
             "title": title,
-            "body": body,
-            "labels": labels
+            "body": body
         }
         
         print(f"\nSending request to create issue on {owner}/{repo}...")
