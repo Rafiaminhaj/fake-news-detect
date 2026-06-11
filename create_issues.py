@@ -1,6 +1,12 @@
 import requests
 import sys
 
+# Ensure UTF-8 output encoding for Windows terminals to print emojis
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8')
+
 def create_github_issue():
     print("=====================================================")
     print("🚀 GSSoC '26 Multi-Project Issue Creator")
