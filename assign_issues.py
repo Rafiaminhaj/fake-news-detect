@@ -13,7 +13,10 @@ REPOS = [
     "asheesh109/KisanAI",
     "anurag3407/career-pilot",
     "Charushi06/StudyPlan",
-    "prajwalsuryawanshi/AgentAPI"
+    "prajwalsuryawanshi/AgentAPI",
+    "aayushraj1010/med-genie",
+    "imDarshanGK/AI-dev-assistant",
+    "yellowgram1543/DoVER"
 ]
 
 def assign_issues():
@@ -83,6 +86,13 @@ def assign_issues():
     if not issues_to_comment:
         print("No issues found via search. Checking known issue numbers...")
         known_issues = [
+            ("aayushraj1010/med-genie", 528),
+            ("imDarshanGK/AI-dev-assistant", 1038),
+            ("yellowgram1543/DoVER", 77),
+            ("abhisheks008/DL-Simplified", 1121),
+            ("souma9830/SnapPass-AI", 804),
+            ("asheesh109/KisanAI", 98),
+            ("anurag3407/career-pilot", 3481),
             ("abhisheks008/DL-Simplified", 1120),
             ("souma9830/SnapPass-AI", 764),
             ("asheesh109/KisanAI", 96),
