@@ -19,7 +19,7 @@ def create_github_issue():
     print("5. StudyPlan (Add NLP Task & Deadline Extraction)")
     print("6. AgentAPI (Add Hugging Face LLM Client Integration)")
     print("7. Med-genie (Add Symptom Classifier & Medical RAG Pipeline)")
-    print("8. AI Developer Assistant (Add Code Syntax Linter & LLM Refinement)")
+    print("8. AI Developer Assistant (Add AI-Powered Automated Unit Test Generator)")
     print("9. DoVER (Add Gemini-powered Document Auditing & Anomaly Engine)")
     print("=====================================================")
     print("*(You can select one choice like '1', or multiple separated by commas like '1,2,3,4')*")
@@ -176,16 +176,17 @@ Please assign this issue to me under GSSoC '26. Thank you!"""
         elif choice == "8":
             owner = "imDarshanGK"
             repo = "AI-dev-assistant"
-            title = "[GSSoC '26] Proposal: Add Python Code Syntax Linter and LLM-powered Refinement Engine"
+            title = "[GSSoC '26] Proposal: Add AI-Powered Automated Unit Test Suite Generator"
             body = """Hello Mentor (@imDarshanGK),
 
-I would like to contribute a backend feature to AI Developer Assistant under GSSoC '26.
+I would like to contribute a highly valuable new feature to AI Developer Assistant under GSSoC '26.
 
-I propose to add a modular backend python service that:
-1. **Linter & Syntax Analyzer:** Parses uploaded code strings using Python's `ast` (Abstract Syntax Trees) module and returns precise line-by-line linting errors and logical syntax warnings.
-2. **LLM Refinement Generator:** Connects to an LLM client (e.g. Gemini API or Hugging Face Client) to generate instant, plain-English refactoring suggestions and bug-fix solutions based on the code analysis.
+I propose to build a module for **Automated Unit Test Case Generation**:
+1. **Interactive Test Generation:** Allows developers to input a function or class code snippet, select their preferred testing framework (e.g., `unittest`/`pytest` for Python, `Jest` for JS/TS, or `JUnit` for Java).
+2. **AI Mock Data & Test Runner Setup:** Connects to the LLM backend (Gemini API or Hugging Face Client) to generate a complete, runnable test suite file including boundary cases, edge-case validations, and standard assertions.
+3. **Structured Export:** Outputs a structured JSON response containing the generated test suite code and a summary of coverage scenarios for easy exporting.
 
-Please assign this issue to me under GSSoC '26. Thank you!"""
+I have strong experience with Python, FastAPI, and LLM integrations. Please assign this issue to me. Thank you!"""
 
         elif choice == "9":
             owner = "yellowgram1543"
