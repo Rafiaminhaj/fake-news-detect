@@ -22,7 +22,7 @@ def create_github_issue():
     print("8. AI Developer Assistant (Add AI-Powered Automated Unit Test Generator)")
     print("9. DoVER (Add Gemini-powered Document Auditing & Anomaly Engine)")
     print("=====================================================")
-    print("*(You can select one choice like '1', or multiple separated by commas like '1,2,3,4')*")
+    print("*(You can select one choice like '7', or multiple separated by commas like '7,8,9')*")
     print("=====================================================")
     
     choice_input = input("Enter choice(s): ").strip()
