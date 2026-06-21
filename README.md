@@ -116,6 +116,36 @@ If you want to view the detector inside your local web browser:
 
 ---
 
+## 🤖 n8n Automated Social Media Moderation (Optional)
+
+You can scale this DistilBERT Fake News Detector into a live social media auto-moderation pipeline using **n8n**. By connecting Slack, Discord, or webhooks, you can automatically intercept posts, classify headlines in real time, and auto-delete fake news.
+
+### n8n Moderation Architecture
+```mermaid
+graph TD
+    Trigger[n8n Trigger: Slack / Discord Message] --> |Headline Text| APIRequest[n8n HTTP Request Node]
+    APIRequest --> |POST to Flask API /predict| FlaskApp[Fine-Tuned DistilBERT Flask Server]
+    FlaskApp --> |Classification Result & Confidence| APIRequest
+    APIRequest --> |If/Else Evaluation| DecisionNode{Is Headline Fake?}
+    DecisionNode --> |Yes| DeleteNode[n8n Action: Auto-Delete Message & Warn User]
+    DecisionNode --> |No| LogNode[n8n Action: Log to Approved News Feed Database]
+```
+
+### Steps to implement in n8n:
+1. **Trigger**: Set up a `Slack` or `Discord` listener node triggered on "On New Message" in a specific channel.
+2. **Classifier API Link**: Add an `HTTP Request` node configured to make a `POST` request to your Flask API (`http://localhost:5000/predict` or your deployed URL) sending the message body as:
+   ```json
+   {
+     "headline": "{{ $json.message }}"
+   }
+   ```
+3. **Decision Node**: Add an `If` node to check if the classification returned from the API equals `Fake`.
+4. **Auto-Moderation**: 
+   - If **True**: Trigger a Slack/Discord API action to delete the offending message and send an automated warning DM to the sender.
+   - If **False**: Pass the verified headline to an approved news channel.
+
+---
+
 ## 📁 Repository Directory Structure
 
 ```text
