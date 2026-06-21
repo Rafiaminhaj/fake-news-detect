@@ -1,0 +1,133 @@
+{
+  "name": "Fake News Auto-Moderation Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "check-headline",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger-node",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5000/predict",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"headline\": \"{{ $json.body.headline }}\"\n}",
+        "options": {}
+      },
+      "id": "http-request-flask-node",
+      "name": "HTTP Request to Flask",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.prediction }}",
+              "value2": "Fake"
+            }
+          ]
+        }
+      },
+      "id": "if-fake-node",
+      "name": "Is Headline Fake?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseText": "=🚨 FAKE NEWS DETECTED!\n\nHeadline: {{ $json.headline }}\nConfidence: {{ $json.confidence }}\nAction: Auto-moderated / Deleted.",
+        "options": {}
+      },
+      "id": "respond-fake-node",
+      "name": "Respond Fake News",
+      "type": "n8n-nodes-base.webhookResponse",
+      "typeVersion": 1,
+      "position": [
+        900,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseText": "=✅ APPROVED NEWS\n\nHeadline: {{ $json.headline }}\nConfidence: {{ $json.confidence }}\nAction: Posted to approved feed.",
+        "options": {}
+      },
+      "id": "respond-real-node",
+      "name": "Respond Real News",
+      "type": "n8n-nodes-base.webhookResponse",
+      "typeVersion": 1,
+      "position": [
+        900,
+        420
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request to Flask",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request to Flask": {
+      "main": [
+        [
+          {
+            "node": "Is Headline Fake?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Headline Fake?": {
+      "main": [
+        [
+          {
+            "node": "Respond Fake News",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Real News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {}
+}

@@ -120,6 +120,15 @@ If you want to view the detector inside your local web browser:
 
 You can scale this DistilBERT Fake News Detector into a live social media auto-moderation pipeline using **n8n**. By connecting Slack, Discord, or webhooks, you can automatically intercept posts, classify headlines in real time, and auto-delete fake news.
 
+### 🚀 Easy 1-Click Workflow Import
+We have included a pre-configured n8n workflow JSON file in this repository: [n8n_workflow.json](n8n_workflow.json).
+To use it:
+1. **Open n8n** (Cloud or Local instance).
+2. Create a **New Workflow**.
+3. Click the menu icon (top right corner) and select **Import from File**.
+4. Choose the `n8n_workflow.json` file from this project.
+5. Your flow is automatically configured! Just set the Flask Server URL in the `HTTP Request` node.
+
 ### n8n Moderation Architecture
 ```mermaid
 graph TD
@@ -131,7 +140,7 @@ graph TD
     DecisionNode --> |No| LogNode[n8n Action: Log to Approved News Feed Database]
 ```
 
-### Steps to implement in n8n:
+### Steps to implement manually in n8n:
 1. **Trigger**: Set up a `Slack` or `Discord` listener node triggered on "On New Message" in a specific channel.
 2. **Classifier API Link**: Add an `HTTP Request` node configured to make a `POST` request to your Flask API (`http://localhost:5000/predict` or your deployed URL) sending the message body as:
    ```json
